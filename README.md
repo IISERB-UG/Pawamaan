@@ -8,11 +8,19 @@ The "vosk.py" file is under development and will be used in the future to add ad
 
 Note that the RPI must have the following libraries installed:
 1)pyrebase
+
 2)serial
+
 3)time
+
 4)firebase
+
 5)datetime
+
 6)calendar
+
 7)tkinter
+
 8)tkinter.ttk
+
 
