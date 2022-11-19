@@ -32,3 +32,15 @@ Note that the RPI must have the following libraries installed:
 8)tkinter.ttk
 
 
+
+
+
+
+
+
+
+This Project was made by Abhishek Prasad, Parth Gupta, Soham Bhar and Mohit Mohandas. 
+
+However we extend our sincere thanks to the unconditional support of our Proffesor Dr. Santanu Talukder (EECS Department, IISERB) for his unconditional support.
+
+
