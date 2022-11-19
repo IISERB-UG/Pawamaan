@@ -9,7 +9,6 @@ import tkinter
 from tkinter import *
 import tkinter.ttk
 import time
-
 import sys
 import os
 time.sleep(1)
@@ -19,16 +18,13 @@ if os.environ.get('DISPLAY','') == '':
 
 from PIL import ImageTk,Image
 tk= tkinter.Tk()
-# set window size
 tk.attributes('-fullscreen',True)
 tk.geometry("480x320")
-#tk.resizable(0, 0)
-#set window color
 tk.configure(bg='black')
 dn=datetime.today().weekday()
 lvar=0
 
-def bfunc():
+def bfunc(): #This is what will happen when we press the button on the touch screen display (This is covered in the future prospects of the project, where we can control a vent wirelessly)
 	global lvar
 	if lvar==0:
 		lvar=1
@@ -36,7 +32,7 @@ def bfunc():
 	elif lvar==1:
 		lvar=0
 		db.child("switches").child("0").update({"state":0})
-
+#GUI of the touch screen display
 w='white'
 b='black'
 g="green"
@@ -69,36 +65,40 @@ liv=Button(text="ekefhbv",borderwidth=0,fg="white",bg="black",command=bfunc)
 liv.place(x=150,y=280)
 c2.grid(row=0,column=1)
 cdt=Label(text='  ppm',font=('Helvetica',ts,'bold'),bg=w,fg=g)
-cd= ImageTk.PhotoImage(Image.open(r"/home/pi/finale/co2newgui3.png"))
+
+#these images have to be downloded on RPI in order for the GUI to display them properly
+cd= ImageTk.PhotoImage(Image.open(r"/home/pi/finale/co2newgui3.png")) #Location of file
 c2.create_image(10,8,anchor=NW,image=cd)
 cdt.place(x=270+px,y=64-p)
 cov=Label(text='ppb',font=('Helvetica',ts,'bold'),bg=w,fg=g)
 cov.place(x=270+50,y=64-p)
-tp=ImageTk.PhotoImage(Image.open(r"/home/pi/finale/humiditynew.jpg"))
+tp=ImageTk.PhotoImage(Image.open(r"/home/pi/finale/humiditynew.jpg"))#Location of file
 c2.create_image(8,60,anchor=NW,image=tp)
 t=Label(text="  'C",font=('Helvetica',ts,'bold'),bg=w,fg=g)
 t.place(x=270+px,y=192-p)
 tv=Label(text="'C",font=('Helvetica',ts,'bold'),bg=w,fg=g)
 tv.place(x=270+50,y=192-p)
-hm=ImageTk.PhotoImage(Image.open(r"/home/pi/finale/tempnewgui.jpg"))
+hm=ImageTk.PhotoImage(Image.open(r"/home/pi/finale/tempnewgui.jpg"))#Location of file
 c2.create_image(10,125,anchor=NW,image=hm)
 h=Label(text='  ppb',font=('Helvetica',ts,'bold'),bg=w,fg=g)
 h.place(x=270+px,y=256-p)
 vov=Label(text='ppb',font=('Helvetica',ts,'bold'),bg=w,fg=g)
 vov.place(x=270+50,y=256-p)
-voc=ImageTk.PhotoImage(Image.open(r"/home/pi/finale/vocnew.jpg"))
+voc=ImageTk.PhotoImage(Image.open(r"/home/pi/finale/vocnew.jpg"))#Location of file
 c2.create_image(10,200,anchor=NW,image=voc)
 v=Label(text='  ppm',font=('Helvetica',ts,'bold'),bg=w,fg=g)
 v.place(x=270+px,y=320-p)
 pmv=Label(text='ppm',font=('Helvetica',ts,'bold'),bg=w,fg=g)
 pmv.place(x=270+50,y=320-p)
-pm=ImageTk.PhotoImage(Image.open("/home/pi/finale/pmnew.png"))
+pm=ImageTk.PhotoImage(Image.open("/home/pi/finale/pmnew.png"))#Location of file
 c2.create_image(10,265,anchor=NW,image=pm)
 pmt=Label(text='  %',font=('Helvetica',ts,'bold'),bg=w,fg=g)
 pmt.place(x=270+px,y=128-p)
 hv=Label(text='%',font=('Helvetica',ts,'bold'),bg=w,fg=g)
 hv.place(x=270+50,y=128-p)
 
+#Configurating access to the firebase account
+#Make sure the device is connected to a WiFi network named "iPhone" with password "parth2222" (without quotes)
 config = {
   "apiKey": "AIzaSyCBMoMS-zz_Ji0sJ169IysHVqH8bVHHWs8",
   "authDomain": "smart-home-db-80bd0.firebaseapp.com",
@@ -109,28 +109,25 @@ config = {
 firebase = pyrebase.initialize_app(config)
 db=firebase.database()
 
-ad=serial.Serial('/dev/ttyUSB0',9600,timeout=1)
+ad=serial.Serial('/dev/ttyUSB0',9600,timeout=1) #reding serial data from the ESP8266
 while 1:
 	try:
 		inp=ad.readline().decode('ascii')
 		print(inp)
 		arr=(inp.strip()).split("@")
-#		print(arr)
-#		print(len(arr))
-		if (len(arr)>1):
+		
+		if (len(arr)>1): #Used to eliminate redundencies at first run of the code
 			print ("CO2:"+arr[0])
 			db.child("sensors").child("Co2 Level").update({"0":arr[0]})
-			if (int(arr[1])<101):
+			if (int(arr[1])<101): #used to eliminate unsuitable values
 				print ("Humidity:"+arr[1])
 				db.child("sensors").child("Humidity").update({"0":arr[1]})
 				hv.config(text=arr[1])
-			#print ("LDR:"+arr[2])
-			#db.child("sensors").child("Co2 Level").update({"0":arr[2]})
+		
 			print ("PM2.5"+arr[2])
 			db.child("sensors").child("Particulate matter").update({"0":arr[2]})
-			#print ("PM10.0"+arr[4])
-			#db.child("sensors").child("Co2 Level").update({"0":arr[4]})
-			if(int(arr[3])<101):
+			
+			if(int(arr[3])<101): #used to eliminate unsuitable values
 				print ("Temp:"+arr[3])
 				db.child("sensors").child("Temperature").update({"0":arr[3]})
 				tv.config(text=arr[3])
