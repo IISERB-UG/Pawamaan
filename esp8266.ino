@@ -10,9 +10,9 @@ DFRobot_DHT11 DHT;
 #include "AGS02MA.h"
 AGS02MA AGS(26);                                    
 
-#define RX_PIN 13
-#define TX_PIN 15
-#define BAUDRATE 9600
+#define RX_PIN 13 //for MHZ19 sensor
+#define TX_PIN 15 //for MHZ19 sensor
+#define BAUDRATE 9600 // for MHZ29 sensor
 
 MHZ19 myMHZ19;                                             
 SoftwareSerial mySerial(RX_PIN, TX_PIN);                   
@@ -24,7 +24,7 @@ int tmp;
 int a=0;
 String buff="@";
 String out="";
-SoftwareSerial pmsSerial(12, 14);
+SoftwareSerial pmsSerial(12, 14); //GPIO pins where the Rx and Tx pins of PMS 7003 sensor is connected
 PMS pms(pmsSerial);
 PMS::DATA data;
 void setup()
