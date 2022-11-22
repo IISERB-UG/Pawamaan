@@ -2,6 +2,9 @@
 
 https://drive.google.com/file/d/1UKsMxa0MP7C3nTh98EXUUsL3o-JW-NSZ/view?usp=sharing
 
+https://drive.google.com/file/d/1j7uXFfr0kv2Z8INPtaHSNGA53o8rpcSB/view?usp=drivesdk
+
+(Drive link for App)
 
 Pawamaan is a Smart Air quality Monitoring System.
 This repository contains two main codes.
